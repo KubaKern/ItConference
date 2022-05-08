@@ -1,0 +1,13 @@
+Schedule IT Conference 01.06.2021
+
+Each lecture will last 1h45m. Between each lecture, there will be 15 minutes coffee break.
+
+                    Schedule
+10:00 - 11:45
+Introduction to Cloud Technologies.
+
+12:00 - 13:45
+Microsoft Azure in IoT.
+
+14:00 - 15:45
+Application examples in Cloud Technology.

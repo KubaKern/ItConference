@@ -1,6 +1,7 @@
 package com.itconference.itconference.api.controller;
 
-import com.itconference.itconference.model.User;
+import com.itconference.itconference.api.model.Information;
+import com.itconference.itconference.entity.User;
 import com.itconference.itconference.repository.UserRepository;
 import com.itconference.itconference.service.ItConferenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +15,18 @@ import java.util.Optional;
 
 @RestController
 public class ItConferenceController {
-
-    private ItConferenceService itConferenceService;
     @Autowired
+    //private ItConferenceService itConferenceService;
     private UserRepository userRepository;
+
     public ItConferenceController(ItConferenceService itConferenceService) {
-        this.itConferenceService = itConferenceService;
+        //this.itConferenceService = itConferenceService;
+        //this.userRepository = userRepository;
     }
 
 
     @PostMapping("/userAdd")
-    public String createUser(@RequestBody User user) {
+    public Information createUser(@RequestBody User user) {
         try {
             List<User> allUsers = new ArrayList<User>();
 
@@ -33,15 +35,15 @@ public class ItConferenceController {
             Optional<User> result = allUsers.stream().findAny().filter(_user -> _user.getName().equals(user.getName()));
 
             if (result.isPresent())
-                return "User with this name already exists";
+                return new Information("User with this name already exists","400");
 
             User _user = userRepository
                     .save(new User(user.getName(), user.getEmail(), user.getPassword()));
 
-            return "Created user " + user.getName();
+            return new Information("Created user " + user.getName(),"200");
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return "Error when creating new user";
+            return new Information(e.getMessage(),"500");
         }
     }
 }

@@ -1,0 +1,15 @@
+Schedule IT Conference 01.06.2021
+
+Each lecture will last 1h45m. Between each lecture, there will be 15 minutes coffee break.
+
+                                                      Schedule
+
+        First block                                 Second block                           Third block
+        10:00 - 11:45                               10:00 - 11:45                          10:00 - 11:45
+        Introduction to Cloud Technologies.         Android essentials.                    What is Artificial Intelligence?
+
+        12:00 - 13:45                               12:00 - 13:45                          12:00 - 13:45
+        Microsoft Azure in IoT.                     Creating apps in Android Studio.       Types of AI.
+
+        14:00 - 15:45                               14:00 - 15:45                          14:00 - 15:45
+        Application examples in Cloud Technology.   Modern mobile applications.            Future with AI.

@@ -1,12 +1,13 @@
 package com.itconference.itconference.api.controller;
 
-import com.itconference.itconference.model.User;
+import com.itconference.itconference.entity.User;
 import com.itconference.itconference.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,15 +18,13 @@ import java.util.Optional;
 @RestController
 public class UserController {
     @Autowired
+
     UserRepository userRepository;
-    @GetMapping("/users")
-    public String getAllUsers(@RequestParam(required = false) String name) {
+
+    @GetMapping("/prelectionUsers")
+    public String getAllUsers() {
         try {
-            List<User> users = new ArrayList<User>();
-            if (name == null)
-                userRepository.findAll().forEach(users::add);
-            else
-                userRepository.findByName(name).forEach(users::add);
+            List<User> users = userRepository.findAll();
             if (users.isEmpty()) {
                 return "no users found";
             }
@@ -67,7 +66,7 @@ public class UserController {
     @GetMapping("/schedule")
     public String conferenceSchedule() {
         try {
-            return Files.readString(Path.of("schedule.txt"), StandardCharsets.US_ASCII);
+            return Files.readString(Path.of("src/main/resources/schedule.txt"), StandardCharsets.US_ASCII);
         }
         catch (Exception e) {
             return "No schedule found.";

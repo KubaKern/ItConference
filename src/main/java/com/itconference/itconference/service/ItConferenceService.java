@@ -1,25 +1,21 @@
 package com.itconference.itconference.service;
 
-import com.itconference.itconference.api.dto.UserDto;
-import com.itconference.itconference.model.User;
+import com.itconference.itconference.api.model.UserModel;
+import com.itconference.itconference.entity.User;
 import com.itconference.itconference.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ItConferenceService {
-    public String users(UserDto userDto) {
+    public String users(UserModel userModel) {
 
-        return userDto.getName();
+        return userModel.getName();
     }
 
     UserRepository userRepository;
@@ -36,8 +32,7 @@ public class ItConferenceService {
             if (result.isPresent())
                 return "User with this name already exists";
 
-            User _user = userRepository
-                    .save(new User(user.getName(), user.getEmail(), user.getPassword()));
+            userRepository.save(new User(user.getName(), user.getEmail(), user.getPassword()));
 
             return "Created user " + user.getName();
         } catch (Exception e) {

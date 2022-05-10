@@ -45,7 +45,7 @@ public class UserController {
             if (user.getName() == null || user.getPassword() == null)
                 return new Information("You must insert your name and password to log in","400");
             else
-                userRepository.findByName(user.getName()).forEach(users::add);
+                userRepository.findAll().forEach(users::add);
 
             Optional<User> result = users.stream().findAny().filter(_user -> _user.getName().equals(user.getName()) && _user.getPassword().equals(user.getPassword()));
 

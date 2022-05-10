@@ -5,9 +5,7 @@ import com.itconference.itconference.entity.User;
 import com.itconference.itconference.repository.UserRepository;
 import com.itconference.itconference.service.ItConferenceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +40,20 @@ public class ItConferenceController {
 
             return new Information("Created user " + user.getName(),"200");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+           // System.out.println(e.getMessage());
+            return new Information(e.getMessage(),"500");
+        }
+    }
+
+    @GetMapping("/userEmailChange/{name},{newEmail}")
+    public Information changeUserEmail(@PathVariable String name, @PathVariable String newEmail) {
+        try {
+            User _user = userRepository.findByName(name);
+            _user.setEmail(newEmail);
+            userRepository.save(_user);
+            return new Information("Email changed succesfuly.","200");
+        }
+        catch (Exception e){
             return new Information(e.getMessage(),"500");
         }
     }

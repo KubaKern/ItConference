@@ -7,3 +7,11 @@ INSERT INTO user (name,email,password) VALUES ('Zielony','green@tlen.pl',123456)
 INSERT INTO lecture (id,lecture_name,lecturer) VALUES (1,'Introduction to Cloud Technologies','Zbigniew');
 INSERT INTO lecture (id,lecture_name,lecturer) VALUES (2,'Microsoft Azure in IoT','Mariusz');
 INSERT INTO lecture (id,lecture_name,lecturer) VALUES (3,'Application examples in Cloud Technology','Zbigniew');
+
+INSERT INTO lecture (id,lecture_name,lecturer) VALUES (4,'Android essentials','Mariusz');
+INSERT INTO lecture (id,lecture_name,lecturer) VALUES (5,'Creating apps in Android Studio','Zbigniew');
+INSERT INTO lecture (id,lecture_name,lecturer) VALUES (6,'Modern mobile applications','Krzysztof');
+
+INSERT INTO lecture (id,lecture_name,lecturer) VALUES (7,'What is Artificial Intelligence','Krzysztof');
+INSERT INTO lecture (id,lecture_name,lecturer) VALUES (8,'Types of AI','Krzysztof');
+INSERT INTO lecture (id,lecture_name,lecturer) VALUES (9,'Future with AI','Mariusz');

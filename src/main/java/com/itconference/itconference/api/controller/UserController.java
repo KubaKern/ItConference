@@ -1,11 +1,9 @@
 package com.itconference.itconference.api.controller;
 
+import com.itconference.itconference.api.model.Information;
 import com.itconference.itconference.entity.User;
 import com.itconference.itconference.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
@@ -22,11 +20,11 @@ public class UserController {
     UserRepository userRepository;
 
     @GetMapping("/prelectionUsers")
-    public String getAllUsers() {
+    public Information getAllUsers() {
         try {
             List<User> users = userRepository.findAll();
             if (users.isEmpty()) {
-                return "no users found";
+                return new Information("No users found.", "404");
             }
 
             StringBuilder allUsers = new StringBuilder();
@@ -35,41 +33,41 @@ public class UserController {
                 allUsers.append(user.getName() + " " + user.getEmail() + "\n");
             }
 
-            return allUsers.toString();
+            return new Information(allUsers.toString(),"200");
         } catch (Exception e) {
-            return "Error occurred";
+            return new Information(e.getMessage(),"500");
         }
     }
     @PostMapping("/userLogin")
-    public String userLogin(@RequestBody(required = false) User user) {
+    public Information userLogin(@RequestBody(required = false) User user) {
         try {
             List<User> users = new ArrayList<User>();
             if (user.getName() == null || user.getPassword() == null)
-                return "You must insert your name and password to log in";
+                return new Information("You must insert your name and password to log in","400");
             else
                 userRepository.findByName(user.getName()).forEach(users::add);
 
             Optional<User> result = users.stream().findAny().filter(_user -> _user.getName().equals(user.getName()) && _user.getPassword().equals(user.getPassword()));
 
             if (result.isPresent())
-                return "Succesfully logged in.";
+                return new Information("Succesfully logged in.","200");
             else
-                return "Wrong credentials.";
+                return new Information("Wrond credentials.","400");
 
 
         } catch (Exception e) {
-            return "Error occurred";
+            return new Information(e.getMessage(),"500");
         }
 
     }
 
     @GetMapping("/schedule")
-    public String conferenceSchedule() {
+    public Information conferenceSchedule() {
         try {
-            return Files.readString(Path.of("src/main/resources/schedule.txt"), StandardCharsets.US_ASCII);
+            return new Information(Files.readString(Path.of("src/main/resources/schedule.txt"), StandardCharsets.US_ASCII),"200");
         }
         catch (Exception e) {
-            return "No schedule found.";
+            return new Information("No schedule found.","500");
         }
     }
 

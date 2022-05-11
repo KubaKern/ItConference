@@ -85,15 +85,12 @@ public class ItConferenceController {
     }
 
     @GetMapping("/lectureSign/{name},{email},{id}")
-    String signForLecture(@PathVariable String name, @PathVariable String email,@PathVariable int id) {
-
+    public String signForLecture(@PathVariable String name, @PathVariable String email,@PathVariable int id) {
         try {
-
             User user = userRepository.findByName(name);
             Lecture lecture = lectureRepository.findById(id);
 
             int block = id %3;
-
             for (Lecture _lecture : user.getRegisteredLectures()) {
                 if (_lecture.getId() % 3 == block)
                     return "You are already registered in another lecture in this time.";
@@ -126,4 +123,32 @@ public class ItConferenceController {
         }
     }
 
+    @GetMapping("/deleteRegistration/{name},{id}")
+    public String deleteRegistration(@PathVariable String name,@PathVariable int id) {
+        User user = userRepository.findByName(name);
+        Lecture lecture = lectureRepository.findById(id);
+        try {
+            System.out.println("xd");
+            int index = 0;
+            for (Lecture _lecture : user.getRegisteredLectures()) {
+                if (_lecture.getId() == id) {
+                    user.getRegisteredLectures().remove(index);
+                    userRepository.save(user);
+                }
+                    index++;
+            }
+            index = 0;
+            for (User _user : lecture.getParticipants()) {
+                if (_user.getName().equals(name)) {
+                lecture.getParticipants().remove(index);
+                    lectureRepository.save(lecture);
+            }
+                index++;
+            }
+        }
+        catch (Exception e) {
+            return e.getMessage();
+        }
+        return "Succesfully deleted reservation.";
+    }
 }

@@ -29,5 +29,9 @@ public class Lecture {
     @ManyToMany(mappedBy = "registeredLectures")
     private List<User> participants = new ArrayList<>();
 
+    public void addParticipant(User user) {
+        participants.add(user);
+    }
+
 
 }

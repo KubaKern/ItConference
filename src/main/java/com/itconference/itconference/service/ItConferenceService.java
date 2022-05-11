@@ -1,11 +1,14 @@
 package com.itconference.itconference.service;
 
 import com.itconference.itconference.api.model.UserModel;
+import com.itconference.itconference.entity.Lecture;
 import com.itconference.itconference.entity.User;
+import com.itconference.itconference.repository.LectureRepository;
 import com.itconference.itconference.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +22,7 @@ public class ItConferenceService {
     }
 
     UserRepository userRepository;
-
+    LectureRepository lectureRepository;
     @PostMapping("/userAdd")
     public String createUser(@RequestBody User user) {
         try {
@@ -39,6 +42,20 @@ public class ItConferenceService {
             return "Error when creating new user";
         }
     }
+
+//    @PostMapping("/lectureSign/{name},{email},{id}")
+//    String signForLecture(@RequestParam String name,@RequestParam String email, @RequestParam int id) {
+//        try {
+//            User user = userRepository.findByName(name);
+//
+//            int test = lectureRepository.countByParticipants(id);
+//
+//            return "ilosc zapisanych " + test;
+//        }
+//        catch (Exception e) {
+//            return e.getMessage();
+//        }
+//    }
 
 //    @GetMapping("/schedule")
 //    public String conferenceSchedule() {

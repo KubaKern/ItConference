@@ -41,4 +41,9 @@ public class User {
         this.email = email;
         this.password = password;
     }
+
+    public void signToLecture(Lecture lecture) {
+        registeredLectures.add(lecture);
+    }
+
 }

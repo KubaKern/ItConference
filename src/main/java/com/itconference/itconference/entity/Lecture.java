@@ -5,10 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,5 +25,9 @@ public class Lecture {
     private String lectureName;
     @Column(name = "lecturer")
     private String lecturer;
+
+    @ManyToMany(mappedBy = "registeredLectures")
+    private List<User> participants = new ArrayList<>();
+
 
 }

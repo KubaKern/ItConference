@@ -1,6 +1,7 @@
 package com.itconference.itconference.api.controller;
 
 import com.itconference.itconference.api.model.Information;
+import com.itconference.itconference.entity.Lecture;
 import com.itconference.itconference.entity.User;
 import com.itconference.itconference.repository.UserRepository;
 import com.itconference.itconference.service.ItConferenceService;
@@ -57,4 +58,22 @@ public class ItConferenceController {
             return new Information(e.getMessage(),"500");
         }
     }
+
+    @GetMapping("/userLectures/{name}")
+    public String registerLecture(@PathVariable String name) {
+        try {
+            User user = userRepository.findByName(name);
+
+            StringBuilder builder = new StringBuilder();
+
+            for (Lecture lecture : user.getRegisteredLectures()) {
+                builder.append(lecture.getLectureName() + "\n");
+            }
+            return builder.toString();
+        }
+        catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+
 }

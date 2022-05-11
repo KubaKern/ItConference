@@ -10,7 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.plaf.IconUIResource;
+import java.io.FileWriter;
+import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -102,8 +107,17 @@ public class ItConferenceController {
                 userRepository.save(user);
                 lectureRepository.save(lecture);
 
-                // stworzenie pliku z powiadomieniami
-
+                String timeStamp = ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME);
+                try {
+                    FileWriter fileWriter = new FileWriter("src/main/resources/powiadomienia.txt");
+                    fileWriter.append("Date: ").append(timeStamp)
+                            .append("\nE-mail: ").append(email).append("\nYou have successfully registered for lecture: ")
+                            .append(lecture.getLectureName()).append("\n");
+                    fileWriter.close();
+                }
+                catch (Exception e) {
+                    return e.getMessage();
+                }
             }
             return "Added to lecture.";
         }

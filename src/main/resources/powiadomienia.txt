@@ -1,3 +1,3 @@
-Date: Wed, 11 May 2022 21:46:19 +0200
-E-mail: kowal@o2.pl
-You have successfully registered for lecture: Future with AI
+Date: Fri, 13 May 2022 00:35:26 +0200
+E-mail: piec@wp.pl
+You have successfully registered for lecture: Creating apps in Android Studio

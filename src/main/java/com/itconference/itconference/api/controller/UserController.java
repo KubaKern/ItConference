@@ -1,5 +1,6 @@
 package com.itconference.itconference.api.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itconference.itconference.api.model.Information;
 import com.itconference.itconference.entity.User;
 import com.itconference.itconference.repository.UserRepository;
@@ -9,9 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class UserController {
@@ -20,22 +19,25 @@ public class UserController {
     UserRepository userRepository;
 
     @GetMapping("/prelectionUsers")
-    public Information getAllUsers() {
+    public String getAllUsers() {
         try {
             List<User> users = userRepository.findAll();
+            Map<String,String> map = new HashMap<>();
             if (users.isEmpty()) {
-                return new Information("No users found.", "404");
+                //return new Information("No users found.", "404");
+                return "{\"No users found\":404}";
             }
-
-            StringBuilder allUsers = new StringBuilder();
-
             for (User user : users) {
-                allUsers.append(user.getName() + " " + user.getEmail() + "\n");
+               // allUsers.append(user.getName() + " " + user.getEmail() + "\n");
+                map.put(user.getName(),user.getEmail());
             }
 
-            return new Information(allUsers.toString(),"200");
+            ObjectMapper mapper = new ObjectMapper();
+
+            return mapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(map);
         } catch (Exception e) {
-            return new Information(e.getMessage(),"500");
+            return e.getMessage();
         }
     }
     @PostMapping("/userLogin")
@@ -54,20 +56,19 @@ public class UserController {
             else
                 return new Information("Wrond credentials.","400");
 
-
         } catch (Exception e) {
             return new Information(e.getMessage(),"500");
         }
-
     }
 
     @GetMapping("/schedule")
-    public Information conferenceSchedule() {
+    public String conferenceSchedule() {
         try {
-            return new Information(Files.readString(Path.of("src/main/resources/schedule.txt"), StandardCharsets.US_ASCII),"200");
+            return Files.readString(Path.of("src/main/resources/schedule.txt"), StandardCharsets.US_ASCII);
         }
         catch (Exception e) {
-            return new Information("No schedule found.","500");
+            return "{\"No schedule found\":404}";
+
         }
     }
 

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class ItConferenceController {
@@ -49,7 +50,6 @@ public class ItConferenceController {
 
             return new Information("Created user " + user.getName(),"200");
         } catch (Exception e) {
-           // System.out.println(e.getMessage());
             return new Information(e.getMessage(),"500");
         }
     }
@@ -85,7 +85,7 @@ public class ItConferenceController {
     }
 
     @GetMapping("/lectureSign/{name},{email},{id}")
-    public String signForLecture(@PathVariable String name, @PathVariable String email,@PathVariable int id) {
+    public Information signForLecture(@PathVariable String name, @PathVariable String email,@PathVariable int id) {
         try {
             User user = userRepository.findByName(name);
             Lecture lecture = lectureRepository.findById(id);
@@ -93,11 +93,11 @@ public class ItConferenceController {
             int block = id %3;
             for (Lecture _lecture : user.getRegisteredLectures()) {
                 if (_lecture.getId() % 3 == block)
-                    return "You are already registered in another lecture in this time.";
+                    return new Information("You are already registered in another lecture in this time.","202");
             }
 
             if (lecture.getParticipants().size() == 5)
-                return "This lecture hax maximum limit for participants.";
+                return new Information("This lecture hax maximum limit for participants.","202");
             else {
                 user.signToLecture(lecture);
                 lecture.addParticipant(user);
@@ -113,42 +113,30 @@ public class ItConferenceController {
                     fileWriter.close();
                 }
                 catch (Exception e) {
-                    return e.getMessage();
+                    return new Information(e.getMessage(),"500");
                 }
             }
-            return "Added to lecture.";
+            return new Information("Added to lecture.","200");
         }
         catch (Exception e) {
-            return e.getMessage();
+            return new Information(e.getMessage(),"500");
         }
     }
 
     @GetMapping("/deleteRegistration/{name},{id}")
-    public String deleteRegistration(@PathVariable String name,@PathVariable int id) {
+    public Information deleteRegistration(@PathVariable String name,@PathVariable int id) {
         User user = userRepository.findByName(name);
         Lecture lecture = lectureRepository.findById(id);
         try {
-            System.out.println("xd");
-            int index = 0;
-            for (Lecture _lecture : user.getRegisteredLectures()) {
-                if (_lecture.getId() == id) {
-                    user.getRegisteredLectures().remove(index);
-                    userRepository.save(user);
-                }
-                    index++;
-            }
-            index = 0;
-            for (User _user : lecture.getParticipants()) {
-                if (_user.getName().equals(name)) {
-                lecture.getParticipants().remove(index);
-                    lectureRepository.save(lecture);
-            }
-                index++;
-            }
+            user.setRegisteredLectures(user.getRegisteredLectures().stream().filter(object->object.getId() != id).collect(Collectors.toList()));
+            userRepository.save(user);
+
+            lecture.setParticipants(lecture.getParticipants().stream().filter(object->object.getName() != name).collect(Collectors.toList()));
+            lectureRepository.save(lecture);
         }
         catch (Exception e) {
-            return e.getMessage();
+            return new Information(e.getMessage(),"500");
         }
-        return "Succesfully deleted reservation.";
+        return new Information("Succesfully deleted reservation.","200");
     }
 }

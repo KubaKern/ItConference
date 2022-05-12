@@ -6,6 +6,7 @@ import com.itconference.itconference.entity.User;
 import com.itconference.itconference.repository.LectureRepository;
 import com.itconference.itconference.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,7 +43,6 @@ public class ItConferenceService {
             return "Error when creating new user";
         }
     }
-
 //    @PostMapping("/lectureSign/{name},{email},{id}")
 //    String signForLecture(@RequestParam String name,@RequestParam String email, @RequestParam int id) {
 //        try {
